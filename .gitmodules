@@ -1,0 +1,9 @@
+[submodule "apple-libtapi"]
+	path = apple-libtapi
+	url = https://github.com/tpoechtrager/apple-libtapi.git
+[submodule "xar"]
+	path = xar
+	url = https://github.com/tpoechtrager/xar.git
+[submodule "cctools-port"]
+	path = cctools-port
+	url = https://github.com/tpoechtrager/cctools-port.git
