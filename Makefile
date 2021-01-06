@@ -1,7 +1,7 @@
 VERSION := 530
 PWD     := $(shell pwd)
 
-.PHONY: all clean
+.PHONY: all deb clean
 
 all: ld64
 
@@ -26,6 +26,27 @@ xar/xar/lib/libxar.a:
 	cd xar/xar; \
 	./configure --enable-static --disable-shared; \
 	$(MAKE) -j16;
+
+deb: ld64_$(VERSION)_amd64.deb
+
+ld64_$(VERSION)_amd64.deb: pkg/usr/bin/ld64 pkg/DEBIAN/control
+	dpkg-deb -b pkg $@
+
+pkg/usr/bin/ld64: ld64 | pkg/usr/bin
+	cp $< $@
+
+pkg/DEBIAN/control:
+	( echo 'Package: ld64'; \
+	  echo 'Architecture: any'; \
+	  echo 'Version: $(VERSION)'; \
+	  echo 'Priority: optional'; \
+	  echo 'Section: utils'; \
+	  echo 'Depends: libc6 (>= 2.29), libgcc1 (>= 3.0), libuuid1 (>= 1.0), libstdc++6 (>= 3.4.26)'; \
+	  echo 'Description: Apple ld64'; \
+	) > $@
+
+pkg/usr/bin pkg/DEBIAN:
+	mkdir -p $@
 
 clean:
 	git clean -xdf
