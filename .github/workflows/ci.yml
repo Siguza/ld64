@@ -20,4 +20,10 @@ jobs:
           name: ld64
           path: |
             ld64
-            *.deb
+            ld64*.deb
+      - uses: actions/upload-artifact@v2
+        with:
+          name: cctools-strip
+          path: |
+            cctools-strip
+            cctools-strip*.deb

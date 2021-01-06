@@ -1,14 +1,18 @@
-VERSION := 530
-PWD     := $(shell pwd)
+LD64_VERSION    := 530
+CCTOOLS_VERSION := 949.0.1
+PWD             := $(shell pwd)
 
 .PHONY: all deb clean
 
-all: ld64
+all: ld64 cctools-strip
 
 ld64: cctools-port/cctools/ld64/src/ld/ld
 	cp $< $@
 
-cctools-port/cctools/ld64/src/ld/ld: apple-libtapi/build/lib/libtapi.a xar/xar/lib/libxar.a
+cctools-strip: cctools-port/cctools/misc/strip
+	cp $< $@
+
+cctools-port/cctools/ld64/src/ld/ld cctools-port/cctools/misc/strip: apple-libtapi/build/lib/libtapi.a xar/xar/lib/libxar.a
 	cd cctools-port/cctools; \
 	./configure CFLAGS='-fdata-sections -ffunction-sections -I$(PWD)/apple-libtapi/src/libtapi/include -I$(PWD)/apple-libtapi/build/projects/libtapi/include -I$(PWD)/xar/xar/include' \
 	            CXXFLAGS='-fdata-sections -ffunction-sections -I$(PWD)/apple-libtapi/src/libtapi/include -I$(PWD)/apple-libtapi/build/projects/libtapi/include -I$(PWD)/xar/xar/include' \
@@ -27,25 +31,41 @@ xar/xar/lib/libxar.a:
 	./configure --enable-static --disable-shared; \
 	$(MAKE) -j16;
 
-deb: ld64_$(VERSION)_amd64.deb
+deb: ld64_$(LD64_VERSION)_amd64.deb cctools-strip_$(CCTOOLS_VERSION)_amd64.deb
 
-ld64_$(VERSION)_amd64.deb: pkg/usr/bin/ld64 pkg/DEBIAN/control
-	dpkg-deb -b pkg $@
+ld64_$(LD64_VERSION)_amd64.deb: deb/ld64/usr/bin/ld64 deb/ld64/DEBIAN/control
+	dpkg-deb -b deb/ld64 $@
 
-pkg/usr/bin/ld64: ld64 | pkg/usr/bin
+deb/ld64/usr/bin/ld64: ld64 | deb/ld64/usr/bin
 	cp $< $@
 
-pkg/DEBIAN/control: | pkg/DEBIAN
+deb/ld64/DEBIAN/control: | deb/ld64/DEBIAN
 	( echo 'Package: ld64'; \
 	  echo 'Architecture: amd64'; \
-	  echo 'Version: $(VERSION)'; \
+	  echo 'Version: $(LD64_VERSION)'; \
 	  echo 'Priority: optional'; \
 	  echo 'Section: utils'; \
 	  echo 'Depends: libc6 (>= 2.29), libgcc1 (>= 3.0), libuuid1 (>= 1.0), libstdc++6 (>= 3.4.26)'; \
 	  echo 'Description: Apple ld64'; \
 	) > $@
 
-pkg/usr/bin pkg/DEBIAN:
+cctools-strip_$(CCTOOLS_VERSION)_amd64.deb: deb/cctools-strip/usr/bin/cctools-strip deb/cctools-strip/DEBIAN/control
+	dpkg-deb -b deb/cctools-strip $@
+
+deb/cctools-strip/usr/bin/cctools-strip: cctools-strip | deb/cctools-strip/usr/bin
+	cp $< $@
+
+deb/cctools-strip/DEBIAN/control: | deb/cctools-strip/DEBIAN
+	( echo 'Package: cctools-strip'; \
+	  echo 'Architecture: amd64'; \
+	  echo 'Version: $(CCTOOLS_VERSION)'; \
+	  echo 'Priority: optional'; \
+	  echo 'Section: utils'; \
+	  echo 'Depends: libc6 (>= 2.29), libgcc1 (>= 3.0)'; \
+	  echo 'Description: Apple cctools strip'; \
+	) > $@
+
+deb/ld64/usr/bin deb/ld64/DEBIAN deb/cctools-strip/usr/bin deb/cctools-strip/DEBIAN:
 	mkdir -p $@
 
 clean:
