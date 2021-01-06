@@ -35,7 +35,7 @@ ld64_$(VERSION)_amd64.deb: pkg/usr/bin/ld64 pkg/DEBIAN/control
 pkg/usr/bin/ld64: ld64 | pkg/usr/bin
 	cp $< $@
 
-pkg/DEBIAN/control:
+pkg/DEBIAN/control: | pkg/DEBIAN
 	( echo 'Package: ld64'; \
 	  echo 'Architecture: any'; \
 	  echo 'Version: $(VERSION)'; \

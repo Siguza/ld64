@@ -13,9 +13,8 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - run: |
-          git submodule update --init --recursive
-          make deb
+      - run: git submodule update --init --recursive
+      - run: make deb
       - uses: actions/upload-artifact@v2
         with:
           name: ld64
