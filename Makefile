@@ -37,7 +37,7 @@ pkg/usr/bin/ld64: ld64 | pkg/usr/bin
 
 pkg/DEBIAN/control: | pkg/DEBIAN
 	( echo 'Package: ld64'; \
-	  echo 'Architecture: any'; \
+	  echo 'Architecture: amd64'; \
 	  echo 'Version: $(VERSION)'; \
 	  echo 'Priority: optional'; \
 	  echo 'Section: utils'; \
