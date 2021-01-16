@@ -12,16 +12,27 @@ jobs:
   build:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
-      - run: git submodule update --init --recursive
-      - run: make deb
-      - uses: actions/upload-artifact@v2
+      - name: Fetch glibc
+        run: |
+          mkdir -p /tmp/ld64
+          cd /tmp/ld64
+          wget 'https://launchpad.net/~ubuntu-security-proposed/+archive/ubuntu/ppa/+build/19412132/+files/libc6_2.23-0ubuntu11.2_amd64.deb'
+          dpkg-deb -x 'libc6_2.23-0ubuntu11.2_amd64.deb' libc6
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Compile
+        run: LDFLAGS='/tmp/ld64/libc6/lib/x86_64-linux-gnu/libc.so.6' make deb
+      - name: Archive ld64
+        uses: actions/upload-artifact@v2
         with:
           name: ld64
           path: |
             ld64
             ld64*.deb
-      - uses: actions/upload-artifact@v2
+      - name: Archive cctools-strip
+        uses: actions/upload-artifact@v2
         with:
           name: cctools-strip
           path: |

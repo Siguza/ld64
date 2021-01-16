@@ -1,5 +1,6 @@
 LD64_VERSION    := 530
 CCTOOLS_VERSION := 949.0.1
+PATCH_VERSION   := -1
 PWD             := $(shell pwd)
 
 .PHONY: all deb clean
@@ -14,9 +15,9 @@ cctools-strip: cctools-port/cctools/misc/strip
 
 cctools-port/cctools/ld64/src/ld/ld cctools-port/cctools/misc/strip: apple-libtapi/build/lib/libtapi.a xar/xar/lib/libxar.a
 	cd cctools-port/cctools; \
-	./configure CFLAGS='-fdata-sections -ffunction-sections -I$(PWD)/apple-libtapi/src/libtapi/include -I$(PWD)/apple-libtapi/build/projects/libtapi/include -I$(PWD)/xar/xar/include' \
-	            CXXFLAGS='-fdata-sections -ffunction-sections -I$(PWD)/apple-libtapi/src/libtapi/include -I$(PWD)/apple-libtapi/build/projects/libtapi/include -I$(PWD)/xar/xar/include' \
-	            LDFLAGS='-flto -Wl,--gc-sections -I$(PWD)/apple-libtapi/build/lib -L$(PWD)/xar/xar/lib'; \
+	./configure CFLAGS='-fdata-sections -ffunction-sections -I$(PWD)/apple-libtapi/src/libtapi/include -I$(PWD)/apple-libtapi/build/projects/libtapi/include -I$(PWD)/xar/xar/include $(CFLAGS)' \
+	            CXXFLAGS='-fdata-sections -ffunction-sections -I$(PWD)/apple-libtapi/src/libtapi/include -I$(PWD)/apple-libtapi/build/projects/libtapi/include -I$(PWD)/xar/xar/include $(CXXFLAGS)' \
+	            LDFLAGS='-flto -Wl,--gc-sections -I$(PWD)/apple-libtapi/build/lib -L$(PWD)/xar/xar/lib $(LDFLAGS)'; \
 	$(MAKE) -j16;
 
 apple-libtapi/build/lib/libtapi.a:
@@ -43,10 +44,10 @@ deb/ld64/DEBIAN/control: | deb/ld64/DEBIAN
 	( echo 'Package: ld64'; \
 	  echo 'Maintainer: Cthulu'; \
 	  echo 'Architecture: amd64'; \
-	  echo 'Version: $(LD64_VERSION)'; \
+	  echo 'Version: $(LD64_VERSION)$(PATCH_VERSION)'; \
 	  echo 'Priority: optional'; \
 	  echo 'Section: utils'; \
-	  echo 'Depends: libc6 (>= 2.29), libgcc1 (>= 3.0), libuuid1 (>= 1.0), libstdc++6 (>= 3.4.26)'; \
+	  echo 'Depends: libc6 (>= 2.23), libgcc1 (>= 3.0), libuuid1 (>= 1.0), libstdc++6 (>= 3.4.26)'; \
 	  echo 'Description: Apple ld64'; \
 	) > $@
 
@@ -60,10 +61,10 @@ deb/cctools-strip/DEBIAN/control: | deb/cctools-strip/DEBIAN
 	( echo 'Package: cctools-strip'; \
 	  echo 'Maintainer: Cthulu'; \
 	  echo 'Architecture: amd64'; \
-	  echo 'Version: $(CCTOOLS_VERSION)'; \
+	  echo 'Version: $(CCTOOLS_VERSION)$(PATCH_VERSION)'; \
 	  echo 'Priority: optional'; \
 	  echo 'Section: utils'; \
-	  echo 'Depends: libc6 (>= 2.29), libgcc1 (>= 3.0)'; \
+	  echo 'Depends: libc6 (>= 2.23), libgcc1 (>= 3.0)'; \
 	  echo 'Description: Apple cctools strip'; \
 	) > $@
 
