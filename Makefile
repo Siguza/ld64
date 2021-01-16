@@ -58,6 +58,7 @@ deb/cctools-strip/usr/bin/cctools-strip: cctools-strip | deb/cctools-strip/usr/b
 
 deb/cctools-strip/DEBIAN/control: | deb/cctools-strip/DEBIAN
 	( echo 'Package: cctools-strip'; \
+	  echo 'Maintainer: Cthulu'; \
 	  echo 'Architecture: amd64'; \
 	  echo 'Version: $(CCTOOLS_VERSION)'; \
 	  echo 'Priority: optional'; \
