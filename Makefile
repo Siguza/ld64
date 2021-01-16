@@ -25,11 +25,11 @@ apple-libtapi/build/lib/libtapi.a:
 	cp src/llvm/projects/libtapi/tools/libtapi/CMakeLists.txt src/llvm/projects/libtapi/tools/libtapi/CMakeLists.txt.bak; \
 	sed -n '1h;1!H;$${g;s/add_tapi_library(libtapi\n  SHARED/add_tapi_library(libtapi\n  STATIC/;p;}' src/llvm/projects/libtapi/tools/libtapi/CMakeLists.txt.bak >src/llvm/projects/libtapi/tools/libtapi/CMakeLists.txt; \
 	rm src/llvm/projects/libtapi/tools/libtapi/CMakeLists.txt.bak; \
-	./build.sh;
+	CFLAGS='$(CFLAGS)' CXXFLAGS='$(CXXFLAGS)' LDFLAGS='$(LDFLAGS)' ./build.sh;
 
 xar/xar/lib/libxar.a:
 	cd xar/xar; \
-	./configure --enable-static --disable-shared; \
+	./configure --enable-static --disable-shared CFLAGS='$(CFLAGS)' CXXFLAGS='$(CXXFLAGS)' LDFLAGS='$(LDFLAGS)'; \
 	$(MAKE) -j16;
 
 deb: ld64_$(LD64_VERSION)_amd64.deb cctools-strip_$(CCTOOLS_VERSION)_amd64.deb
