@@ -23,7 +23,7 @@ jobs:
         with:
           submodules: true
       - name: Compile
-        run: LDFLAGS='/tmp/ld64/libc6/lib/x86_64-linux-gnu/libc.so.6' make deb
+        run: LDFLAGS='/tmp/ld64/libc6/lib/x86_64-linux-gnu/libc.so.6 /tmp/ld64/libc6/lib/x86_64-linux-gnu/libm.so.6 /tmp/ld64/libc6/lib/x86_64-linux-gnu/libdl.so.2 /tmp/ld64/libc6/lib/x86_64-linux-gnu/libpthread.so.0' make deb
       - name: Archive ld64
         uses: actions/upload-artifact@v2
         with:
