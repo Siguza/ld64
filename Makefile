@@ -41,6 +41,7 @@ deb/ld64/usr/bin/ld64: ld64 | deb/ld64/usr/bin
 
 deb/ld64/DEBIAN/control: | deb/ld64/DEBIAN
 	( echo 'Package: ld64'; \
+	  echo 'Maintainer: Cthulu'; \
 	  echo 'Architecture: amd64'; \
 	  echo 'Version: $(LD64_VERSION)'; \
 	  echo 'Priority: optional'; \
