@@ -32,9 +32,9 @@ xar/xar/lib/libxar.a:
 	./configure --enable-static --disable-shared CFLAGS='$(CFLAGS)' CXXFLAGS='$(CXXFLAGS)' LDFLAGS='$(LDFLAGS)'; \
 	$(MAKE) -j16;
 
-deb: ld64_$(LD64_VERSION)_amd64.deb cctools-strip_$(CCTOOLS_VERSION)_amd64.deb
+deb: ld64_$(LD64_VERSION)$(PATCH_VERSION)_amd64.deb cctools-strip_$(CCTOOLS_VERSION)_amd64.deb
 
-ld64_$(LD64_VERSION)_amd64.deb: deb/ld64/usr/bin/ld64 deb/ld64/DEBIAN/control
+ld64_$(LD64_VERSION)$(PATCH_VERSION)_amd64.deb: deb/ld64/usr/bin/ld64 deb/ld64/DEBIAN/control
 	dpkg-deb -b deb/ld64 $@
 
 deb/ld64/usr/bin/ld64: ld64 | deb/ld64/usr/bin
