@@ -12,7 +12,7 @@ jobs:
   build:
     runs-on: ubuntu-20.04
     steps:
-      - name: Fetch glibc
+      - name: Fetch build libraries
         run: |
           mkdir -p /tmp/ld64
           cd /tmp/ld64
@@ -20,12 +20,18 @@ jobs:
           dpkg-deb -x 'libc6_2.23-0ubuntu11.2_amd64.deb' libc6
           wget 'http://security.ubuntu.com/ubuntu/pool/main/libx/libxml2/libxml2_2.9.3+dfsg1-1ubuntu0.7_amd64.deb'
           dpkg-deb -x 'libxml2_2.9.3+dfsg1-1ubuntu0.7_amd64.deb' libxml2
+          wget 'http://security.ubuntu.com/ubuntu/pool/main/z/zlib/zlib1g_1.2.11.dfsg-2ubuntu4_amd64.deb'
+          dpkg-deb -x 'zlib1g_1.2.11.dfsg-2ubuntu4_amd64.deb' zlib1g
+          wget 'http://security.ubuntu.com/ubuntu/pool/main/x/xz-utils/liblzma5_5.2.4-1ubuntu1_amd64.deb'
+          dpkg-deb -x 'liblzma5_5.2.4-1ubuntu1_amd64.deb' liblzma
+          wget 'http://security.ubuntu.com/ubuntu/pool/main/i/icu/libicu55_55.1-7ubuntu0.5_amd64.deb'
+          dpkg-deb -x 'libicu55_55.1-7ubuntu0.5_amd64.deb' libicu55
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
           submodules: true
       - name: Compile
-        run: LDFLAGS='/tmp/ld64/libc6/lib/x86_64-linux-gnu/libc.so.6 /tmp/ld64/libc6/lib/x86_64-linux-gnu/libm.so.6 /tmp/ld64/libc6/lib/x86_64-linux-gnu/libdl.so.2 /tmp/ld64/libc6/lib/x86_64-linux-gnu/libpthread.so.0 /tmp/ld64/libxml2/usr/lib/x86_64-linux-gnu/libxml2.so.2' make deb
+        run: LDFLAGS='/tmp/ld64/libc6/lib/x86_64-linux-gnu/libc.so.6 /tmp/ld64/libc6/lib/x86_64-linux-gnu/libm.so.6 /tmp/ld64/libc6/lib/x86_64-linux-gnu/libdl.so.2 /tmp/ld64/libc6/lib/x86_64-linux-gnu/libpthread.so.0 /tmp/ld64/libxml2/usr/lib/x86_64-linux-gnu/libxml2.so.2 /tmp/ld64/zlib1g/lib/x86_64-linux-gnu/libz.so.1 /tmp/ld64/liblzma/lib/x86_64-linux-gnu/liblzma.so.5 /tmp/ld64/libicu55/usr/lib/x86_64-linux-gnu/libicuuc.so.55 /tmp/ld64/libicu55/usr/lib/x86_64-linux-gnu/libicudata.so.55' make deb
       - name: Archive ld64
         uses: actions/upload-artifact@v2
         with:
