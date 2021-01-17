@@ -1,6 +1,6 @@
 LD64_VERSION    := 530
 CCTOOLS_VERSION := 949.0.1
-PATCH_VERSION   := -1
+PATCH_VERSION   := -2
 PWD             := $(shell pwd)
 
 .PHONY: all deb clean
@@ -47,7 +47,7 @@ deb/ld64/DEBIAN/control: | deb/ld64/DEBIAN
 	  echo 'Version: $(LD64_VERSION)$(PATCH_VERSION)'; \
 	  echo 'Priority: optional'; \
 	  echo 'Section: utils'; \
-	  echo 'Depends: libc6 (>= 2.23), libgcc1 (>= 3.0), libuuid1 (>= 1.0), libstdc++6 (>= 3.4.26)'; \
+	  echo 'Depends: libc6 (>= 2.29), libgcc1 (>= 3.0), libuuid1 (>= 1.0), libstdc++6 (>= 3.4.26)'; \
 	  echo 'Description: Apple ld64'; \
 	) > $@
 
@@ -64,7 +64,7 @@ deb/cctools-strip/DEBIAN/control: | deb/cctools-strip/DEBIAN
 	  echo 'Version: $(CCTOOLS_VERSION)$(PATCH_VERSION)'; \
 	  echo 'Priority: optional'; \
 	  echo 'Section: utils'; \
-	  echo 'Depends: libc6 (>= 2.23), libgcc1 (>= 3.0)'; \
+	  echo 'Depends: libc6 (>= 2.29), libgcc1 (>= 3.0)'; \
 	  echo 'Description: Apple cctools strip'; \
 	) > $@
 
