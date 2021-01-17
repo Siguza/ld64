@@ -73,4 +73,6 @@ deb/ld64/usr/bin deb/ld64/DEBIAN deb/cctools-strip/usr/bin deb/cctools-strip/DEB
 
 clean:
 	git clean -xdf
-	git checkout apple-libtapi/src/llvm/projects/libtapi/tools/libtapi/CMakeLists.txt
+	cd apple-libtapi && git clean -xdf && git reset --hard
+	cd cctools-port && git clean -xdf && git reset --hard
+	cd xar && git clean -xdf && git reset --hard
