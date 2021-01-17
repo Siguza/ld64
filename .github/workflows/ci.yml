@@ -18,7 +18,7 @@ jobs:
           cd /tmp/ld64
           wget 'http://security.ubuntu.com/ubuntu/pool/main/g/glibc/libc6_2.23-0ubuntu11.2_amd64.deb'
           dpkg-deb -x 'libc6_2.23-0ubuntu11.2_amd64.deb' libc6
-          wget 'https://security.ubuntu.com/ubuntu/pool/main/libx/libxml2/libxml2_2.9.3+dfsg1-1ubuntu0.7_amd64.deb'
+          wget 'http://security.ubuntu.com/ubuntu/pool/main/libx/libxml2/libxml2_2.9.3+dfsg1-1ubuntu0.7_amd64.deb'
           dpkg-deb -x 'libxml2_2.9.3+dfsg1-1ubuntu0.7_amd64.deb' libxml2
       - name: Checkout repository
         uses: actions/checkout@v2
