@@ -32,7 +32,7 @@ xar/xar/lib/libxar.a:
 	./configure --enable-static --disable-shared CFLAGS='$(CFLAGS)' CXXFLAGS='$(CXXFLAGS)' LDFLAGS='$(LDFLAGS)'; \
 	$(MAKE) -j16;
 
-deb: ld64_$(LD64_VERSION)$(PATCH_VERSION)_amd64.deb cctools-strip_$(CCTOOLS_VERSION)_amd64.deb
+deb: ld64_$(LD64_VERSION)$(PATCH_VERSION)_amd64.deb cctools-strip_$(CCTOOLS_VERSION)$(PATCH_VERSION)_amd64.deb
 
 ld64_$(LD64_VERSION)$(PATCH_VERSION)_amd64.deb: deb/ld64/usr/bin/ld64 deb/ld64/DEBIAN/control
 	dpkg-deb -b deb/ld64 $@
@@ -51,7 +51,7 @@ deb/ld64/DEBIAN/control: | deb/ld64/DEBIAN
 	  echo 'Description: Apple ld64'; \
 	) > $@
 
-cctools-strip_$(CCTOOLS_VERSION)_amd64.deb: deb/cctools-strip/usr/bin/cctools-strip deb/cctools-strip/DEBIAN/control
+cctools-strip_$(CCTOOLS_VERSION)$(PATCH_VERSION)_amd64.deb: deb/cctools-strip/usr/bin/cctools-strip deb/cctools-strip/DEBIAN/control
 	dpkg-deb -b deb/cctools-strip $@
 
 deb/cctools-strip/usr/bin/cctools-strip: cctools-strip | deb/cctools-strip/usr/bin
