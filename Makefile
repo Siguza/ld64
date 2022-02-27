@@ -17,7 +17,7 @@ cctools-port/cctools/ld64/src/ld/ld cctools-port/cctools/misc/strip: apple-libta
 	cd cctools-port/cctools; \
 	./configure CFLAGS='-fdata-sections -ffunction-sections -I$(PWD)/apple-libtapi/src/libtapi/include -I$(PWD)/apple-libtapi/build/projects/libtapi/include -I$(PWD)/xar/xar/include $(CFLAGS)' \
 	            CXXFLAGS='-fdata-sections -ffunction-sections -I$(PWD)/apple-libtapi/src/libtapi/include -I$(PWD)/apple-libtapi/build/projects/libtapi/include -I$(PWD)/xar/xar/include $(CXXFLAGS)' \
-	            LDFLAGS='-flto -Wl,--gc-sections -I$(PWD)/apple-libtapi/build/lib -L$(PWD)/xar/xar/lib $(LDFLAGS)'; \
+	            LDFLAGS='-flto -Wl,--gc-sections -I$(PWD)/apple-libtapi/build/lib -L$(PWD)/xar/xar/lib $(LDFLAGS)' $(CCTOOLS_FLAGS); \
 	$(MAKE) -j16;
 
 apple-libtapi/build/lib/libtapi.a:
@@ -25,11 +25,11 @@ apple-libtapi/build/lib/libtapi.a:
 	cp src/llvm/projects/libtapi/tools/libtapi/CMakeLists.txt src/llvm/projects/libtapi/tools/libtapi/CMakeLists.txt.bak; \
 	sed -n '1h;1!H;$${g;s/add_tapi_library(libtapi\n  SHARED/add_tapi_library(libtapi\n  STATIC/;p;}' src/llvm/projects/libtapi/tools/libtapi/CMakeLists.txt.bak >src/llvm/projects/libtapi/tools/libtapi/CMakeLists.txt; \
 	rm src/llvm/projects/libtapi/tools/libtapi/CMakeLists.txt.bak; \
-	CFLAGS='$(CFLAGS)' CXXFLAGS='$(CXXFLAGS)' LDFLAGS='$(LDFLAGS)' ./build.sh;
+	CFLAGS='$(CFLAGS)' CXXFLAGS='$(CXXFLAGS)' LDFLAGS='$(LDFLAGS)' $(TAPI_FLAGS) ./build.sh;
 
 xar/xar/lib/libxar.a:
 	cd xar/xar; \
-	./configure --enable-static --disable-shared CFLAGS='$(CFLAGS)' CXXFLAGS='$(CXXFLAGS)' LDFLAGS='$(LDFLAGS)'; \
+	./configure --enable-static --disable-shared CFLAGS='$(CFLAGS)' CXXFLAGS='$(CXXFLAGS)' LDFLAGS='$(LDFLAGS)' $(XAR_FLAGS); \
 	$(MAKE) -j16;
 
 deb: ld64_$(LD64_VERSION)$(PATCH_VERSION)_amd64.deb cctools-strip_$(CCTOOLS_VERSION)$(PATCH_VERSION)_amd64.deb
